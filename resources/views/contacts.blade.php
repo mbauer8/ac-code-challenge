@@ -1,35 +1,11 @@
 <!DOCTYPE html>
 
-
-@php
-    /*
-     foreach($contacts as $contact) {
-         echo "<br>" . $contact['email'];
-
-         foreach($contact as $key => $item) {
-             echo "<br>Key: " . $key . ": " . $item->email;
-
-             foreach($item as $value) {
-                 echo "<br>Value:" . $value;
-             }
-
-         }
-
-
-         echo "<br><br>";
-     }
- */
-     //dd("stop......");
-@endphp
-
-
-
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Active Campaign - Code Challenge</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -41,12 +17,10 @@
                 color: #636b6f;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
-                /*height: 100vh;*/
                 margin: 0;
             }
 
             .full-height {
-                /*height: 100vh;*/
                 padding-top: 50px;
             }
 
@@ -60,20 +34,6 @@
                 position: relative;
             }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -82,10 +42,6 @@
                 letter-spacing: .1rem;
                 text-decoration: none;
                 text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
             }
 
             .contacts-table {
@@ -104,6 +60,7 @@
             td {
                 padding: 10px;
                 border-top: 1px solid black;
+                vertical-align: middle;
             }
 
             .contacts-thead {
@@ -126,7 +83,6 @@
                 color: #000000;
                 text-align: center;
                 line-height: 20px;
-                /*margin: 20px 0;*/
             }
         </style>
 
@@ -145,7 +101,6 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-
             <table class="contacts-table">
                 <thead class="contacts-thead">
                 <tr>
@@ -160,7 +115,7 @@
 
                 @foreach($contacts as $contact)
                     @php
-
+                        // Set tje contact initials
                         $contact_initials = substr($contact['firstName'], 0, 1) . substr($contact['lastName'], 0, 1);
 
                         // Allow only Digits, remove all other characters.
@@ -171,21 +126,20 @@
 
                     <tr>
                         <td><input type="checkbox" id="chk-contact" value="{{ $contact['id'] }}"></td>
-                        <td style="vertical-align: middle;">
+                        <td>
+                            @if($contact_initials != '')
+                                <div id="profileImage" style="float:left">{{ strtoupper($contact_initials) }}</div>
+                            @else
+                                <div style="float:left"><img class="contact-img" src="https://d226aj4ao1t61q.cloudfront.net/gjcq9h7qt_gravatar_camp_default_circle.png"></div>
+                            @endif
 
+                            <div style="margin-left: 30px;">
                                 @if($contact_initials != '')
-                                    <div id="profileImage" style="float:left">{{ strtoupper($contact_initials) }}</div>
+                                    <a href="#">{{ $contact['firstName'] . " " . $contact['lastName'] }}</a>
                                 @else
-                                    <div style="float:left"><img class="contact-img" src="https://d226aj4ao1t61q.cloudfront.net/gjcq9h7qt_gravatar_camp_default_circle.png"></div>
+                                    --
                                 @endif
-
-                                <div style="margin-left: 30px;">
-                                    @if($contact_initials != '')
-                                        <a href="#">{{ $contact['firstName'] . " " . $contact['lastName'] }}</a>
-                                    @else
-                                        --
-                                    @endif
-                                </div>
+                            </div>
                         </td>
                         <td>
                             @if($contact['email'] != '')
@@ -194,17 +148,12 @@
                                 --
                             @endif
                         </td>
-                        <td>
-                            {{ ($contact['orgname'] != '') ? $contact['orgname'] : '--' }}
-                        </td>
-                        <td>
-                            {{ $phone_number }}
-                        </td>
+                        <td>{{ ($contact['orgname'] != '') ? $contact['orgname'] : '--' }}</td>
+                        <td>{{ $phone_number }}</td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
-
         </div>
     </body>
 </html>
